@@ -26,7 +26,7 @@ final class BaritoneCommandExecutor {
 			Object result = execute.invoke(manager, normalized);
 			return !(result instanceof Boolean) || (Boolean) result;
 		} catch (ReflectiveOperationException error) {
-			System.err.println("[llm-playing-minecraft] Baritone reflection failed: " + error.getMessage());
+			System.err.println("[llm-playing-minecraft] Baritone reflection failed: " + error);
 			return false;
 		}
 	}

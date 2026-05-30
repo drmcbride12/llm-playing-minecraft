@@ -34,6 +34,23 @@ python -m llm_playing_minecraft doctor
 llm-playing-minecraft doctor
 ```
 
+## Build Release Artifacts
+
+```powershell
+.\scripts\build_release.ps1
+```
+
+The script runs the Python tests, builds the controller exe, attempts to build
+the Fabric bridge jar, and copies release-ready files to:
+
+```text
+dist/release/
+```
+
+If Windows blocks JDK 25 access from inside PowerShell script execution, run the
+bridge build command from [fabric-bridge.md](fabric-bridge.md) first; the release
+script will package the existing jar.
+
 ## Add A Transport
 
 1. Create a class implementing `CommandTransport`.

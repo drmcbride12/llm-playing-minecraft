@@ -3,11 +3,15 @@
 __pycache__/
 *.py[cod]
 *.egg-info/
+*.spec
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
 .gradle/
+.packaging/
+build-tools/
 dist/
 build/
 logs/
 run-output/
+fabric-bridge/run/

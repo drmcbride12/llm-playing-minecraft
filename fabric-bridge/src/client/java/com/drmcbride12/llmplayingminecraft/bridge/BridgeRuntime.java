@@ -51,7 +51,7 @@ final class BridgeRuntime {
 				try {
 					postObservation(observation);
 				} catch (Exception error) {
-					System.err.println("[llm-playing-minecraft] Observation post failed: " + error.getMessage());
+					System.err.println("[llm-playing-minecraft] Observation post failed: " + error);
 				} finally {
 					reporting.set(false);
 				}
@@ -63,7 +63,7 @@ final class BridgeRuntime {
 				try {
 					pollCommand().ifPresent(pendingCommands::add);
 				} catch (Exception error) {
-					System.err.println("[llm-playing-minecraft] Command poll failed: " + error.getMessage());
+					System.err.println("[llm-playing-minecraft] Command poll failed: " + error);
 				} finally {
 					polling.set(false);
 				}
@@ -114,12 +114,18 @@ final class BridgeRuntime {
 		while ((command = pendingCommands.poll()) != null) {
 			if (command.baritoneCommand() != null && !command.baritoneCommand().isBlank()) {
 				boolean executed = BaritoneCommandExecutor.execute(command.baritoneCommand());
-				if (!executed) {
+				if (executed) {
+					System.out.println("[llm-playing-minecraft] Executed Baritone command " + command.id() + ": " + command.baritoneCommand());
+				} else {
 					System.err.println("[llm-playing-minecraft] Could not execute Baritone command: " + command.baritoneCommand());
 				}
 			}
 			if (command.chat() != null && !command.chat().isBlank()) {
-				ChatExecutor.send(minecraftClient, command.chat());
+				if (ChatExecutor.send(minecraftClient, command.chat())) {
+					System.out.println("[llm-playing-minecraft] Sent chat command " + command.id() + ": " + command.chat());
+				} else {
+					System.err.println("[llm-playing-minecraft] Could not send chat command: " + command.chat());
+				}
 			}
 		}
 	}

@@ -19,6 +19,8 @@ The mod jar will be under:
 fabric-bridge/build/libs/
 ```
 
+The repository release script also copies the final jar to `dist/release/`.
+
 ## Runtime Protocol
 
 By default each client reads:
