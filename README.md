@@ -134,6 +134,7 @@ doctor    Check configuration and confirm LM Studio is reachable.
 models    Print model ids reported by the configured API.
 baritone-profile
           Print the configured Baritone #set profile.
+serve     Run the local multi-client Minecraft bridge controller.
 plan      Ask the LLM for exactly one validated action.
 run       Execute a supervised observe-plan-act loop with console output.
 ```

@@ -14,6 +14,7 @@ from .baritone_profiles import (
     render_profile_commands,
     render_profile_markdown,
 )
+from .bridge_server import BridgeController, run_bridge_server
 from .config import (
     DEFAULT_BARITONE_PROFILE,
     AppConfig,
@@ -60,6 +61,8 @@ def main(argv: list[str] | None = None) -> int:
             return _plan(args, client)
         if args.command == "run":
             return _run(args, client)
+        if args.command == "serve":
+            return _serve(args, client)
     except LLMApiError as exc:
         print(f"llm api error: {exc}", file=sys.stderr)
         return 3
@@ -123,6 +126,23 @@ def _build_parser() -> argparse.ArgumentParser:
         "--interactive-observation",
         action="store_true",
         help="Prompt for a fresh observation before every step.",
+    )
+
+    serve_parser = subparsers.add_parser(
+        "serve",
+        help="Run the local multi-client Minecraft bridge controller.",
+    )
+    serve_parser.add_argument("--host", default="127.0.0.1", help="Bind host.")
+    serve_parser.add_argument("--port", type=int, default=8765, help="Bind port.")
+    serve_parser.add_argument(
+        "--goal",
+        required=True,
+        help="Default goal assigned to every connected Minecraft client.",
+    )
+    serve_parser.add_argument(
+        "--no-auto-plan",
+        action="store_true",
+        help="Accept observations but only send manually queued commands.",
     )
 
     return parser
@@ -227,6 +247,16 @@ def _run(args: argparse.Namespace, client: LMStudioClient) -> int:
         if action.wait_seconds:
             time.sleep(action.wait_seconds)
 
+    return 0
+
+
+def _serve(args: argparse.Namespace, client: LMStudioClient) -> int:
+    controller = BridgeController.from_agent(
+        MinecraftAgent(client),
+        default_goal=args.goal,
+        auto_plan=not args.no_auto_plan,
+    )
+    run_bridge_server(args.host, args.port, controller)
     return 0
 
 
