@@ -210,6 +210,7 @@ The package has no runtime dependencies beyond Python's standard library.
 - [docs/lmstudio-gemma4.md](docs/lmstudio-gemma4.md) walks through LM Studio and Gemma setup.
 - [docs/baritone-integration.md](docs/baritone-integration.md) explains the Minecraft bridge plan.
 - [docs/baritone-bold-profile.md](docs/baritone-bold-profile.md) documents the aggressive Baritone settings profile.
+- [docs/fabric-bridge.md](docs/fabric-bridge.md) explains the Minecraft client bridge mod.
 - [docs/agent-strategy.md](docs/agent-strategy.md) explains how the LLM should use Baritone over long goals.
 - [docs/observation-contract.md](docs/observation-contract.md) defines the compact non-image world summary format.
 - [docs/prompt-contract.md](docs/prompt-contract.md) documents the model JSON schema.

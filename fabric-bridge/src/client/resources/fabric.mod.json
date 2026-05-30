@@ -1,0 +1,30 @@
+{
+	"schemaVersion": 1,
+	"id": "llm_playing_minecraft_bridge",
+	"version": "${version}",
+	"name": "LLM Playing Minecraft Bridge",
+	"description": "Client bridge that reports compact Minecraft observations to a local LLM controller and executes validated Baritone commands.",
+	"authors": [
+		"drmcbride12",
+		"Codex"
+	],
+	"contact": {
+		"sources": "https://github.com/drmcbride12/llm-playing-minecraft"
+	},
+	"license": "Apache-2.0",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"com.drmcbride12.llmplayingminecraft.bridge.LlmPlayingMinecraftBridgeClient"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.2",
+		"minecraft": "~26.1.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"baritone": "*"
+	}
+}
