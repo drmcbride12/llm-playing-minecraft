@@ -12,20 +12,25 @@ The project is designed around:
 - a 16,384-token active context window
 - a built-in `bold` Baritone profile for sprinting, parkour, water-bucket falls,
   and more human-like risk/reward
-- a small, auditable action schema before direct Minecraft control is added
+- a small, auditable action schema before commands reach Baritone
 - documentation-first development so every bridge is understandable and testable
 
 ## Current Status
 
-This first slice is a runnable planning program. It calls LM Studio, asks the
-model for one JSON action, validates that action, and prints a supervised
-Baritone command for a human operator.
+This repo now has the two pieces needed for a first playable loop:
 
-Direct Minecraft injection is intentionally not hidden behind magic. Baritone is
-a client-side mod, so a normal server RCON connection cannot directly run
-`#mine`, `#goto`, or other client chat commands inside the player client. The
-current `console` transport is the safe base layer; future transports can target
-a Fabric chat bridge, macro bridge, or bot client once that bridge exists.
+- a Fabric client bridge mod under `fabric-bridge/`
+- a local controller program that can be packaged as
+  `llm-playing-minecraft-controller.exe`
+
+Each Minecraft client runs the bridge mod plus Baritone. One controller process
+runs on the PC, talks to one LM Studio server, accepts observations from any
+number of clients, and returns validated Baritone commands.
+
+The bridge has been smoke-tested against a local Fabric dev server: it loaded in
+Minecraft, auto-connected to `127.0.0.1:25565`, posted live observations, and
+executed both a manual `#goto` command and an LM Studio-selected `#explore`
+command through Baritone.
 
 ## Quick Start
 
@@ -105,7 +110,46 @@ Expected shape:
 }
 ```
 
-### 5. Run a supervised loop
+### 5. Run the multi-client bridge controller
+
+```powershell
+python -m llm_playing_minecraft serve `
+  --goal "Survive the first day: gather wood, avoid danger, and keep moving productively"
+```
+
+By default it listens on:
+
+```text
+http://127.0.0.1:8765
+```
+
+Every bridge client uses its own `client_id`, so several Minecraft clients can
+share this one controller and one LM Studio instance.
+
+### 6. Install the Minecraft-side bridge
+
+Build the mod jar:
+
+```powershell
+cd fabric-bridge
+$env:JAVA_HOME="C:\Users\swage\Documents\jdk25-temurin\jdk-25.0.3+9"
+$env:Path="$env:JAVA_HOME\bin;$env:Path"
+.\gradlew.bat build --stacktrace --console=plain
+```
+
+Copy the built jar from `fabric-bridge/build/libs/` into each client's Fabric
+`mods` folder alongside Fabric API and Baritone. On first launch, the bridge
+writes:
+
+```text
+config/llm-playing-minecraft-bridge.properties
+```
+
+Set a unique `client_id` for each client if you copy configs between instances.
+Optional: set `auto_connect_server=127.0.0.1:25565` to make a client connect to a
+local test server after the title screen loads.
+
+### 7. Run a supervised loop
 
 ```powershell
 python -m llm_playing_minecraft run `
@@ -158,12 +202,14 @@ details.
 
 ```mermaid
 flowchart LR
-    OBS["Minecraft observation"] --> PROMPT["Prompt builder"]
+    CLIENT["Fabric bridge clients"] --> OBS["Compact observations"]
+    OBS --> CONTROLLER["Local controller"]
+    CONTROLLER --> PROMPT["Prompt builder"]
     PROMPT --> API["LM Studio /api/v1/chat"]
     API --> PARSE["JSON parser and validator"]
     PARSE --> ACTION["AgentAction"]
-    ACTION --> CONSOLE["Console transport"]
-    CONSOLE --> HUMAN["Human applies Baritone command"]
+    ACTION --> CLIENT
+    CLIENT --> BARITONE["Baritone command manager"]
 ```
 
 The important design rule is that the LLM never gets a raw execution channel.

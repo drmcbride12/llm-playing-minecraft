@@ -51,6 +51,40 @@ If Windows blocks JDK 25 access from inside PowerShell script execution, run the
 bridge build command from [fabric-bridge.md](fabric-bridge.md) first; the release
 script will package the existing jar.
 
+## Local Minecraft Smoke Test
+
+The dev-client smoke test uses ignored files under `fabric-bridge/run/`.
+
+1. Start the controller:
+
+```powershell
+python -m llm_playing_minecraft serve `
+  --goal "Survive the first day: gather wood, avoid danger, and keep moving productively"
+```
+
+2. Start a local test server from `fabric-bridge/` after writing dev-only
+   `run/eula.txt` and `run/server.properties`:
+
+```powershell
+.\gradlew.bat --no-daemon runServer --stacktrace --console=plain
+```
+
+3. Set the client bridge config:
+
+```properties
+auto_connect_server=127.0.0.1:25565
+```
+
+4. Launch the client:
+
+```powershell
+.\gradlew.bat --no-daemon runClient --stacktrace --console=plain
+```
+
+If the local Baritone build references `dev.babbaj:nether-pathfinder`, copy
+`nether-pathfinder-1.4.1.jar` into `fabric-bridge/run/mods/`. The Gradle build
+adds that local jar to `runClient` only when it exists.
+
 ## Add A Transport
 
 1. Create a class implementing `CommandTransport`.

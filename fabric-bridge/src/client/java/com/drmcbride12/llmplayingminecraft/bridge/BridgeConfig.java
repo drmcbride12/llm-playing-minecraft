@@ -15,12 +15,14 @@ final class BridgeConfig {
 
 	final String clientId;
 	final String controllerUrl;
+	final String autoConnectServer;
 	final int reportTicks;
 	final int pollTicks;
 
-	private BridgeConfig(String clientId, String controllerUrl, int reportTicks, int pollTicks) {
+	private BridgeConfig(String clientId, String controllerUrl, String autoConnectServer, int reportTicks, int pollTicks) {
 		this.clientId = clientId;
 		this.controllerUrl = stripTrailingSlash(controllerUrl);
+		this.autoConnectServer = autoConnectServer.trim();
 		this.reportTicks = reportTicks;
 		this.pollTicks = pollTicks;
 	}
@@ -46,6 +48,10 @@ final class BridgeConfig {
 			properties.setProperty("controller_url", "http://127.0.0.1:8765");
 			changed = true;
 		}
+		if (!properties.containsKey("auto_connect_server")) {
+			properties.setProperty("auto_connect_server", "");
+			changed = true;
+		}
 		if (!properties.containsKey("report_ticks")) {
 			properties.setProperty("report_ticks", "40");
 			changed = true;
@@ -69,6 +75,7 @@ final class BridgeConfig {
 		return new BridgeConfig(
 			properties.getProperty("client_id"),
 			properties.getProperty("controller_url"),
+			properties.getProperty("auto_connect_server", ""),
 			intProperty(properties, "report_ticks", 40),
 			intProperty(properties, "poll_ticks", 20)
 		);

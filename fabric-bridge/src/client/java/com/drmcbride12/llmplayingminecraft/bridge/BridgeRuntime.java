@@ -32,6 +32,7 @@ final class BridgeRuntime {
 	private final AtomicBoolean polling = new AtomicBoolean(false);
 	private int ticks;
 	private long lastCommandId;
+	private boolean autoConnectAttempted;
 
 	BridgeRuntime(BridgeConfig config) {
 		this.config = config;
@@ -43,6 +44,7 @@ final class BridgeRuntime {
 
 	void onClientTick(Object minecraftClient) {
 		ticks++;
+		autoConnect(minecraftClient);
 		executePending(minecraftClient);
 
 		if (ticks % config.reportTicks == 0 && reporting.compareAndSet(false, true)) {
@@ -68,6 +70,23 @@ final class BridgeRuntime {
 					polling.set(false);
 				}
 			});
+		}
+	}
+
+	private void autoConnect(Object minecraftClient) {
+		if (autoConnectAttempted || config.autoConnectServer.isBlank() || ticks < 80) {
+			return;
+		}
+		if (ReflectionAccess.field(minecraftClient, "player", "field_1724").isPresent()) {
+			autoConnectAttempted = true;
+			return;
+		}
+
+		autoConnectAttempted = true;
+		if (ServerConnector.connect(minecraftClient, config.autoConnectServer)) {
+			System.out.println("[llm-playing-minecraft] Auto-connecting to " + config.autoConnectServer);
+		} else {
+			System.err.println("[llm-playing-minecraft] Could not auto-connect to " + config.autoConnectServer);
 		}
 	}
 

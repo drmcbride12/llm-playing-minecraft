@@ -22,7 +22,7 @@ class ClientState:
     goal: str
     observation: str = ""
     command: dict | None = None
-    command_id: int = 0
+    command_id: int = field(default_factory=lambda: int(time() * 1000))
     history: list[AgentAction] = field(default_factory=list)
     connected_at: float = field(default_factory=time)
     updated_at: float = field(default_factory=time)

@@ -29,6 +29,13 @@ dependencies {
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 }
 
+def localNetherPathfinder = file("run/mods/nether-pathfinder-1.4.1.jar")
+if (localNetherPathfinder.exists()) {
+	dependencies {
+		clientRuntimeOnly files(localNetherPathfinder)
+	}
+}
+
 processResources {
 	inputs.property "version", project.version
 
