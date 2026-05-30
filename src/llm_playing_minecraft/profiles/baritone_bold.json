@@ -1,0 +1,182 @@
+{
+  "name": "bold",
+  "display_name": "Bold Human-ish Risk/Reward",
+  "risk_level": "aggressive",
+  "description": "Aggressive Baritone settings for faster, less timid movement while avoiding impossible assumptions such as walking on lava without supporting effects or mods.",
+  "settings": [
+    {
+      "name": "allowSprint",
+      "value": true,
+      "category": "movement",
+      "reason": "Move at human sprint pace whenever Baritone can path it."
+    },
+    {
+      "name": "sprintAscends",
+      "value": true,
+      "category": "movement",
+      "reason": "Sprint-jump ascends for faster hill and stair movement."
+    },
+    {
+      "name": "allowParkour",
+      "value": true,
+      "category": "risk",
+      "reason": "Enable the core risky traversal behavior requested for a bolder bot."
+    },
+    {
+      "name": "allowParkourAscend",
+      "value": true,
+      "category": "risk",
+      "reason": "Let parkour participate in upward movement when possible."
+    },
+    {
+      "name": "allowParkourPlace",
+      "value": true,
+      "category": "risk",
+      "reason": "Permit block placement during parkour-style movement."
+    },
+    {
+      "name": "allowDiagonalAscend",
+      "value": true,
+      "category": "movement",
+      "reason": "Accept faster diagonal upward movement."
+    },
+    {
+      "name": "allowDiagonalDescend",
+      "value": true,
+      "category": "risk",
+      "reason": "Accept slightly unsafe diagonal descents for speed."
+    },
+    {
+      "name": "allowOvershootDiagonalDescend",
+      "value": true,
+      "category": "risk",
+      "reason": "Allow sprint-through diagonal descents that may overshoot slightly."
+    },
+    {
+      "name": "overshootTraverse",
+      "value": true,
+      "category": "movement",
+      "reason": "Treat small overshoots as successful to preserve momentum."
+    },
+    {
+      "name": "allowPlace",
+      "value": true,
+      "category": "capability",
+      "reason": "Allow bridging, pillaring, and practical route construction."
+    },
+    {
+      "name": "allowBreak",
+      "value": true,
+      "category": "capability",
+      "reason": "Allow direct routes that require breaking blocks."
+    },
+    {
+      "name": "allowInventory",
+      "value": true,
+      "category": "capability",
+      "reason": "Allow Baritone to move usable blocks and tools to the hotbar."
+    },
+    {
+      "name": "autoTool",
+      "value": true,
+      "category": "capability",
+      "reason": "Use the best available tool automatically."
+    },
+    {
+      "name": "allowDownward",
+      "value": true,
+      "category": "risk",
+      "reason": "Permit digging directly underfoot when the planner chooses that tradeoff."
+    },
+    {
+      "name": "allowWaterBucketFall",
+      "value": true,
+      "category": "risk",
+      "reason": "Permit bucket-clutch style falls when a water bucket is available."
+    },
+    {
+      "name": "maxFallHeightNoWater",
+      "value": 5,
+      "category": "risk",
+      "reason": "Allow minor fall damage for faster descent, similar to a confident human player."
+    },
+    {
+      "name": "maxFallHeightBucket",
+      "value": 22,
+      "category": "risk",
+      "reason": "Allow near-lethal bucket-fall plans while staying below unarmored lethal fall height."
+    },
+    {
+      "name": "blockPlacementPenalty",
+      "value": 2.0,
+      "category": "cost",
+      "reason": "Make placed-block routes more competitive."
+    },
+    {
+      "name": "blockBreakAdditionalPenalty",
+      "value": 0.0,
+      "category": "cost",
+      "reason": "Avoid extra hesitation about breaking blocks."
+    },
+    {
+      "name": "jumpPenalty",
+      "value": 0.0,
+      "category": "cost",
+      "reason": "Do not penalize jumps in the path cost."
+    },
+    {
+      "name": "avoidance",
+      "value": false,
+      "category": "risk",
+      "reason": "Do not add conservative mob/spawner avoidance costs by default."
+    },
+    {
+      "name": "mobAvoidanceCoefficient",
+      "value": 1.0,
+      "category": "risk",
+      "reason": "Neutral mob avoidance; do not irrationally seek mobs."
+    },
+    {
+      "name": "mobSpawnerAvoidanceCoefficient",
+      "value": 1.0,
+      "category": "risk",
+      "reason": "Neutral spawner avoidance; the planner can choose when risk is worthwhile."
+    },
+    {
+      "name": "avoidUpdatingFallingBlocks",
+      "value": false,
+      "category": "risk",
+      "reason": "Allow faster mining near sand or gravel instead of forbidding it."
+    },
+    {
+      "name": "pauseMiningForFallingBlocks",
+      "value": false,
+      "category": "risk",
+      "reason": "Avoid waiting for every falling-block update during aggressive runs."
+    },
+    {
+      "name": "enterPortal",
+      "value": true,
+      "category": "capability",
+      "reason": "Walk all the way into portals when a portal is the goal."
+    }
+  ],
+  "excluded_settings": [
+    {
+      "name": "assumeWalkOnLava",
+      "reason": "Requires external abilities such as fire resistance and lava-walking support."
+    },
+    {
+      "name": "assumeWalkOnWater",
+      "reason": "Requires an external water-walking capability."
+    },
+    {
+      "name": "allowVines",
+      "reason": "Baritone's docs warn it can trap the bot indefinitely."
+    },
+    {
+      "name": "assumeSafeWalk",
+      "reason": "Requires a separate safe-walk capability and can mis-handle right clicks."
+    }
+  ]
+}

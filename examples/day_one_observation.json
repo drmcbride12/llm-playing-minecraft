@@ -1,0 +1,30 @@
+{
+  "summary": "Morning plains spawn with oak trees, sheep, and exposed stone nearby.",
+  "player": {
+    "position": "0 64 0 overworld",
+    "biome": "plains",
+    "health": 20,
+    "hunger": 20,
+    "time": "morning"
+  },
+  "inventory": ["empty"],
+  "baritone": {
+    "status": "idle",
+    "profile": "bold",
+    "last_command": null,
+    "last_error": null
+  },
+  "important_blocks": [
+    {"block": "oak_log", "nearest": "8m north", "count": 14, "reachable": true},
+    {"block": "stone", "nearest": "18m east hillside", "count": 40, "reachable": true}
+  ],
+  "entities": [
+    {"type": "sheep", "nearest": "12m west", "count": 3}
+  ],
+  "hazards": [],
+  "regions": [
+    {"name": "oak grove", "direction": "north", "distance": 8, "resources": ["oak_log"]},
+    {"name": "stone hillside", "direction": "east", "distance": 18, "resources": ["stone"]}
+  ],
+  "memory": ["spawn is near 0 64 0", "no base established"]
+}
